@@ -28,5 +28,5 @@ if __name__ == "__main__":
             backup_playlists(req)
 
     except HttpError as e:
-        print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+        print("An HTTP error %d occurred:\n%s" % (e.resp.status, e.content))
 

@@ -188,7 +188,7 @@ def create_related_request(channel_request):
 
     # Traverse channel_response to create list of related playlist IDs
     for channel in channel_response["items"]:
-        for playlist, playlist_id in channel["contentDetails"]["relatedPlaylists"].items():
+        for playlist, playlist_id in list(channel["contentDetails"]["relatedPlaylists"].items()):
             playlist_id_list.append(playlist_id)
 
     return youtube.playlists().list(
@@ -215,7 +215,7 @@ def backup_playlists(playlists_request):
                 maxResults=MAX_RESULTS
             )
 
-            print "{}".format(playlist["snippet"]["title"].encode("utf-8"))
+            print("{}".format(playlist["snippet"]["title"].encode("utf-8")))
 
             # Fetch pages of videos until end
             while playlist_items_request:
@@ -223,7 +223,7 @@ def backup_playlists(playlists_request):
 
                 # Print videos in each playlist
                 for i, video in enumerate(playlist_items_response["items"], start=1):
-                    print "{}. {}".format((i + video_count), video["snippet"]["title"].encode("utf-8"))
+                    print("{}. {}".format((i + video_count), video["snippet"]["title"].encode("utf-8")))
 
                 # Request next page of videos
                 playlist_items_request = youtube.playlistItems().list_next(
@@ -232,7 +232,7 @@ def backup_playlists(playlists_request):
                 if playlist_items_request is not None:
                     video_count += MAX_RESULTS
                 else:
-                    print
+                    print()
 
         # Request next page of playlists
         playlists_request = youtube.playlists().list_next(
