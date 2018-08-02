@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import argparse
 import httplib2
 from config import *
@@ -76,6 +77,12 @@ class Options():
             self.related = arguments.related if (arguments.related) else RELATED
         except NameError:
             self.related = None
+
+os.chdir(DIR)
+date = time.strftime('%Y%m%d-%H%M%S')
+os.mkdir(date)
+os.chdir(date)
+file = open('Awesome_Artists.txt', 'w+', encoding='utf8',newline='\n')
 
 def process_arguments():
     parser = argparse.ArgumentParser(description="YouTube Playlist Backup script",
@@ -223,7 +230,7 @@ def backup_playlists(playlists_request):
 
                 # Print videos in each playlist
                 for i, video in enumerate(playlist_items_response["items"], start=1):
-                    print("{}. {}".format((i + video_count), video["snippet"]["title"].encode("utf-8")))
+                    file.write(("{}. {}".format((i + video_count), video["snippet"]["title"]))+'\n')
 
                 # Request next page of videos
                 playlist_items_request = youtube.playlistItems().list_next(
